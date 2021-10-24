@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"strings"
+	"time"
 )
 
 //Create a new type of "dec"
@@ -64,5 +66,23 @@ func newDeckFromFile(filename string) deck {
 
 	s := strings.Split(string(bs), ",")
 	return deck(s)
+
+}
+
+//Shuffle function that uses random numbers to change their index in the oreder to change theri position
+
+func (d deck) shuffle() {
+	//creating seed value, value inside is UnixNano starting tamo which will give us different time/number every time
+	source := rand.NewSource(time.Now().UnixNano())
+
+	//creating new rand object from seed value which is of type rand and can be use as rand(default package object)
+	r := rand.New(source)
+
+	for i := range d {
+		newPosition := r.Intn(len(d) - 1)
+
+		d[i], d[newPosition] = d[newPosition], d[i]
+
+	}
 
 }
